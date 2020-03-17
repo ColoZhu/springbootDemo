@@ -32,7 +32,7 @@ public class Test1 {
         //获取模拟的实体数据集合
         List<DemoData> demoDataList = getDemoDataList();
 
-        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        //这里需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         EasyExcel.write(fileName, DemoData.class)
                 .includeColumnFiledNames(Arrays.asList(filds))
                 .sheet("模板")
@@ -50,7 +50,13 @@ public class Test1 {
         for (int i = 0; i < 10; i++) {
             DemoData data = new DemoData();
             data.setString("字符串" + i);
-            data.setDate(new Date());
+            //data.setDate(new Date());
+            //设置属性一部分为空值
+            if(i%2==0){
+                data.setDoubleData(null);
+            }else{
+                data.setDate(new Date());
+            }
             data.setDoubleData(0.56);
             list.add(data);
         }
