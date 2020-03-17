@@ -1,13 +1,10 @@
 package czs.alibabaeazyexcel;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.support.ExcelTypeEnum;
+import czs.bean.DemoData;
 import org.junit.Test;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
