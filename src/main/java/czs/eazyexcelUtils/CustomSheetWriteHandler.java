@@ -19,15 +19,12 @@ import java.util.List;
  * @author
  */
 public class CustomSheetWriteHandler implements SheetWriteHandler {
-
-
     //列宽集合
     private List<Integer> columnWidths;
     //构造
     public CustomSheetWriteHandler(List<Integer> columnWidths) {
         this.columnWidths = columnWidths;
     }
-
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomSheetWriteHandler.class);
 
@@ -52,9 +49,6 @@ public class CustomSheetWriteHandler implements SheetWriteHandler {
                 writeSheetHolder.getSheet().setColumnWidth(i, columnWidths.get(i));
             }
         }
-
         LOGGER.info("普通策略设置setColumnWidth结束~");
-
-
     }
 }
