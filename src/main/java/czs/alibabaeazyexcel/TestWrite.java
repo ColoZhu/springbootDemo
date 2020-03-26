@@ -8,36 +8,41 @@ import czs.bean.DemoData;
 import czs.bean.User;
 import czs.eazyexcelUtils.CustomCellWriteHandler;
 import czs.eazyexcelUtils.CustomSheetWriteHandler;
+import czs.eazyexcelUtils.MyMergeStrategy;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.*;
 
-public class Test1 {
+public class TestWrite {
 
 
-  //  EasyExcel.write(fileName, WidthAndHeightData.class).sheet("模板").doWrite(data());
-
+    //  EasyExcel.write(fileName, WidthAndHeightData.class).sheet("模板").doWrite(data());
 
 
     /**
-     * 写入到固定文件中,这里不使用注解的方式写入列和对应的属性
+     * 写入到固定文件中,合并单元格
      *
      * @throws IOException
      */
     @Test
     public void writeToExcelFile4() {
 
-
-        /*------------------------------分割线------------------------------*/
-        //这里自定义一个单元格的格式(标黄的行高亮显示)
-        Integer[] yellowRows = {3,5,7,9};
-        Set<Integer> yellowRowsSet = new HashSet<>(Arrays.asList(yellowRows));
-        CustomCellWriteHandler customCellWriteHandler = new CustomCellWriteHandler(yellowRowsSet );
+        //定义合并单元格的坐标范围
+        List<CellRangeAddress> cellRangeAddresss = getCellRangeAddresss();
+        //定义合并单元格策略
+        MyMergeStrategy myMergeStrategy = new MyMergeStrategy(cellRangeAddresss);
 
         //写入的文excel文件
         String fileName = "I:\\temp\\writeDemo4.xlsx";
+
+        /*------------------------------分割线------------------------------*/
+        //这里自定义一个单元格的格式(标黄的行高亮显示)
+        Integer[] yellowRows = {3, 5, 7, 9};
+        Set<Integer> yellowRowsSet = new HashSet<>(Arrays.asList(yellowRows));
+        CustomCellWriteHandler customCellWriteHandler = new CustomCellWriteHandler(yellowRowsSet);
 
         //获取头和内容的策略
         HorizontalCellStyleStrategy horizontalCellStyleStrategy = getHorizontalCellStyleStrategy();
@@ -57,6 +62,7 @@ public class Test1 {
         //获取模拟的实体数据集合
         List<User> userList = getUserList();
 
+
         //这里指定头的名字去写入，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         EasyExcel.write(fileName)
                 .head(head)
@@ -64,6 +70,8 @@ public class Test1 {
                 .registerWriteHandler(customSheetWriteHandler)
                 //注册单元格式
                 .registerWriteHandler(customCellWriteHandler)
+                //注册合并策略
+                .registerWriteHandler(myMergeStrategy)
                 .includeColumnFiledNames(Arrays.asList(filds))
                 .sheet("模板")
                 .doWrite(userList);
@@ -77,11 +85,10 @@ public class Test1 {
      */
     @Test
     public void writeToExcelFile3() {
-
         //这里自定义一个单元格的格式(标黄的行高亮显示)
-        Integer[] yellowRows = {3,5,7,9};
+        Integer[] yellowRows = {3, 5, 7, 9};
         Set<Integer> yellowRowsSet = new HashSet<>(Arrays.asList(yellowRows));
-        CustomCellWriteHandler customCellWriteHandler = new CustomCellWriteHandler(yellowRowsSet );
+        CustomCellWriteHandler customCellWriteHandler = new CustomCellWriteHandler(yellowRowsSet);
 
         //写入的文excel文件
         String fileName = "I:\\temp\\writeDemo3.xlsx";
@@ -194,7 +201,7 @@ public class Test1 {
      *
      * @return
      */
-    private HorizontalCellStyleStrategy getHorizontalCellStyleStrategy() {
+    public static HorizontalCellStyleStrategy getHorizontalCellStyleStrategy() {
         // 头的策略
         WriteCellStyle headWriteCellStyle = new WriteCellStyle();
         // 背景设置为红色
@@ -228,7 +235,7 @@ public class Test1 {
      * @param filds
      * @return
      */
-    private List getHeadByFilds(String[] filds) {
+    public static List getHeadByFilds(String[] filds) {
         List<List<String>> titles = new ArrayList<List<String>>();
         for (int i = 0; i < filds.length; i++) {
             titles.add(Arrays.asList(filds[i]));
@@ -243,7 +250,7 @@ public class Test1 {
      * @param columnWidthArr
      * @return
      */
-    private Map getColumnWidthMap(int[] columnWidthArr) {
+    public static Map getColumnWidthMap(int[] columnWidthArr) {
         Map columnWidthMap = new HashMap();
         for (int i = 0; i < columnWidthArr.length; i++) {
             columnWidthMap.put(i, columnWidthArr[i]);
@@ -257,7 +264,7 @@ public class Test1 {
      *
      * @return
      */
-    private List<DemoData> getDemoDataList() {
+    public static  List<DemoData> getDemoDataList() {
         List<DemoData> list = new ArrayList<DemoData>();
         for (int i = 0; i < 10; i++) {
             DemoData data = new DemoData();
@@ -281,7 +288,7 @@ public class Test1 {
      *
      * @return
      */
-    private List<User> getUserList() {
+    public static List<User> getUserList() {
         List<User> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             User user = new User();
@@ -298,34 +305,27 @@ public class Test1 {
         }
         return list;
     }
-
 
 
     /**
-     * 模拟实体数据(带高亮显示的)
+     * 模拟合并单元格的位置
      *
      * @return
      */
-    private List<User> getUserList4YellowFlag() {
-        List<User> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            User user = new User();
-            user.setUid("识别码" + i);
-            user.setAge(i * 10);
-            //设置属性一部分为空值
-            if (i % 2 == 0) {
-                user.setBirthday(new Date());
-            } else {
-                user.setBirthday(null);
-            }
-            user.setName("用户名" + i);
-            list.add(user);
-        }
+    public static List<CellRangeAddress> getCellRangeAddresss() {
+        List<CellRangeAddress> list = new ArrayList<>();
+        //合并第4行
+        CellRangeAddress item1 = new CellRangeAddress(3, 3, 0, 3);
+        //合并第第6行的第一列和第二列
+        CellRangeAddress item2 = new CellRangeAddress(5, 5, 0, 1);
+        //合并第9行和第10行
+        CellRangeAddress item3 = new CellRangeAddress(10, 11, 0, 3);
 
-        //最后一行高亮,
-        list.get(9).setYellowFlag(1);
+        list.add(item1);
+        list.add(item2);
+        list.add(item3);
         return list;
-    }
 
+    }
 
 }

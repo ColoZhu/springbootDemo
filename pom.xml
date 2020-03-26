@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>czs</groupId>
-    <artifactId>springboot-mailserver</artifactId>
+    <artifactId>springboot-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>mailserver</name>
+    <name>demo</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
