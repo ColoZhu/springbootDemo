@@ -12,10 +12,7 @@ import czs.listenerAndConverter.DemoExceptionListener;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 public class TestRead {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestRead.class);

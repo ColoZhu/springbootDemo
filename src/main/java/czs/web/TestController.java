@@ -1,9 +1,12 @@
 package czs.web;
 
-import com.alibaba.excel.EasyExcel;
+
 import com.alibaba.fastjson.JSONObject;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import czs.bean.Student;
 import czs.service.TestEazyexcelService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,7 @@ import java.io.IOException;
 
 
 //下面是一个测试controller，模拟请求接口，发送消息，
+@Api(value = "测试1",tags = "测试1")
 @Controller
 public class TestController {
 
