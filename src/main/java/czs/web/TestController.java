@@ -2,11 +2,11 @@ package czs.web;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+
 import czs.bean.Student;
 import czs.service.TestEazyexcelService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,7 @@ public class TestController {
     @RequestMapping("/testSendMsg")
     @ResponseBody
     public String testSendMsg() {
+        int i=1;
         return "success";
     }
 

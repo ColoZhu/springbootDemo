@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -20,6 +21,48 @@ public class TestWrite {
 
 
     //  EasyExcel.write(fileName, WidthAndHeightData.class).sheet("模板").doWrite(data());
+
+
+
+
+    /**
+     * 使用byte数组写入excle发送邮件
+     *
+     * @throws IOException
+     */
+    public static MailInfo.ExcelFile writeToMail() {
+        //输出流放excel数据
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        //获取头和内容的策略
+        HorizontalCellStyleStrategy horizontalCellStyleStrategy = getHorizontalCellStyleStrategy();
+        //列宽的策略,宽度是小单位
+        Integer columnWidthArr[] = {3000, 6000};
+        List<Integer> columnWidths = Arrays.asList(columnWidthArr);
+        CustomSheetWriteHandler customSheetWriteHandler = new CustomSheetWriteHandler(columnWidths);
+
+        // 根据用户传入字段 假设我们只要导出 string date
+        String[] filds = {"string", "date"};
+
+        //获取模拟的实体数据集合
+        List<DemoData> demoDataList = getDemoDataList();
+
+        //创建工作簿到流中
+        //这里需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        EasyExcel.write(os, DemoData.class)
+                .registerWriteHandler(horizontalCellStyleStrategy)
+                .registerWriteHandler(customSheetWriteHandler)
+                //这个是导出需要展示的列
+                .includeColumnFiledNames(Arrays.asList(filds))
+                .sheet("模板")
+                .doWrite(demoDataList);
+        //保存字节数组
+        MailInfo.ExcelFile excelFile = new MailInfo.ExcelFile();
+        excelFile.setByteArray(os.toByteArray());
+        return excelFile;
+    }
+
+
+
 
 
     /**
@@ -142,9 +185,11 @@ public class TestWrite {
         CustomSheetWriteHandler customSheetWriteHandler = new CustomSheetWriteHandler(columnWidths);
 
         // 根据用户传入字段 假设我们只要导出 string date
-        String[] filds = {"uid", "name", "age", "birthday"};
+       // String[] filds = {"uid", "name", "age", "birthday"};
+       // String[] headers = {"唯一识别码", "姓名", "年龄", "生日"};
 
-        String[] headers = {"唯一识别码", "姓名", "年龄", "生日"};
+        String[] filds = {"birthday", "name", "age", "uid"};
+        String[] headers = {"生日", "姓名", "年龄", "唯一识别码"};
 
         List head = getHeadByFilds(headers);
 
