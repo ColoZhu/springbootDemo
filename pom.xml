@@ -49,7 +49,7 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <!--boot 2.1默认 mysql8的版本; boot 2.0默认mysql5版本-->
-            <version>8.0.13</version>
+            <version>8.0.28</version>
             <!--<version>5.1.46</version>-->
             <!--<scope>runtime</scope>-->
         </dependency>
